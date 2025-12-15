@@ -84,34 +84,39 @@ namespace BankTodo
         static void Addaccount()
         {
             Console.WriteLine("Enter Your Account Number");
-            string accountNumber = Console.ReadLine().ToUpper();
+            string accountNumber = Console.ReadLine();
+           
+            if (!accountNumber.All(char.IsDigit))
+            {
+                Console.WriteLine("Account number must be numeric.");
+                return;
+            }
+            accountNumber = accountNumber.ToUpper();
             if (bankAccounts.ContainsKey(accountNumber))
             {
                 Console.WriteLine(accountNumber + ":Account already exists , Please Login");
-
             }
             else
             {
-                bankAccounts.Add(accountNumber,500);
+                bankAccounts.Add(accountNumber, 500);
                 Console.WriteLine("Account added successfully\n" + "Account Number is : " + accountNumber + " Balance is 500");
                 transactionHistory.Add(accountNumber, new List<Transaction>
-
                 {
                     new Transaction
                     {
-
-                    Date = DateTime.Now,
-                    Type="Openning",
-                    Amount = 500 ,
-                    Balance = 500
+                        Date = DateTime.Now,
+                        Type = "Openning",
+                        Amount = 500,
+                        Balance = 500
                     }
                 });
             }
         }
+
         static void Loginaccount()
         {
             Console.WriteLine("Login Your Account Number");
-            string accountNumber = Console.ReadLine().ToUpper();
+            string accountNumber = Console.ReadLine();
             if (bankAccounts.ContainsKey(accountNumber))
             {
                 Console.WriteLine("Login Successful");
@@ -126,7 +131,7 @@ namespace BankTodo
         static void Checkbalance()
         {
                 Console.WriteLine("Enter Your Account Number to Check Balance");
-                string accountNumber = Console.ReadLine().ToUpper();
+                string accountNumber = Console.ReadLine();
                 if (bankAccounts.ContainsKey(accountNumber))
                 {
                     Console.WriteLine("Your Account Balance is " + bankAccounts[accountNumber]);
@@ -141,14 +146,16 @@ namespace BankTodo
         static void Depositbalance()
         {
             Console.WriteLine("Enter Your Account Number to Deposit Balance");
-            string accountNumber = Console.ReadLine().ToUpper();
+            string accountNumber = Console.ReadLine();
             if (bankAccounts.ContainsKey(accountNumber))
             {
                 Console.WriteLine("Enter Amount to Deposit");
-                decimal amount = Convert.ToDecimal(Console.ReadLine());
-                if (amount <= 0)
+                string input = Console.ReadLine();
+                decimal amount;
+                
+                if (!decimal.TryParse(input, out amount) || amount <= 0)
                 {
-                    Console.WriteLine("Deposit amount must be greater than 0");
+                    Console.WriteLine("Deposit amount must be a positive number.");
                     return;
                 }
 
@@ -157,8 +164,8 @@ namespace BankTodo
                 transactionHistory[accountNumber].Add(new Transaction
                 { 
                     Date = DateTime.Now,
-                    Type="Deposit",
-                    Amount = amount ,
+                    Type = "Deposit",
+                    Amount = amount,
                     Balance = bankAccounts[accountNumber]
 
                 });
@@ -171,14 +178,16 @@ namespace BankTodo
         static void Withdrawbalance()
         {
             Console.WriteLine("Enter Your Account Number to Withdraw Balance");
-            string accountNumber = Console.ReadLine().ToUpper();
+            string accountNumber = Console.ReadLine();
             if (bankAccounts.ContainsKey(accountNumber))
             {
                 Console.WriteLine("Enter Amount to Withdraw");
-                decimal amount = Convert.ToDecimal(Console.ReadLine());
-                if (amount <= 0)
+                string input = Console.ReadLine();
+                decimal amount;
+              
+                if (!decimal.TryParse(input, out amount) || amount <= 0)
                 {
-                    Console.WriteLine("Withdraw amount must be greater than 0");
+                    Console.WriteLine("Withdraw amount must be a positive number.");
                     return;
                 }
                 if (bankAccounts[accountNumber] >= amount)
@@ -188,8 +197,8 @@ namespace BankTodo
                     transactionHistory[accountNumber].Add(new Transaction { 
                         
                         Date = DateTime.Now,
-                        Type="Withdraw",
-                        Amount= amount ,
+                        Type = "Withdraw",
+                        Amount = amount,
                         Balance = bankAccounts[accountNumber] 
                     });
                 }
