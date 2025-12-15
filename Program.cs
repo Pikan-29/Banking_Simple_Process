@@ -146,6 +146,12 @@ namespace BankTodo
             {
                 Console.WriteLine("Enter Amount to Deposit");
                 decimal amount = Convert.ToDecimal(Console.ReadLine());
+                if (amount <= 0)
+                {
+                    Console.WriteLine("Deposit amount must be greater than 0");
+                    return;
+                }
+
                 bankAccounts[accountNumber] += amount;
                 Console.WriteLine("Deposit Successful. New Balance is " + bankAccounts[accountNumber]);
                 transactionHistory[accountNumber].Add(new Transaction
@@ -170,6 +176,11 @@ namespace BankTodo
             {
                 Console.WriteLine("Enter Amount to Withdraw");
                 decimal amount = Convert.ToDecimal(Console.ReadLine());
+                if (amount <= 0)
+                {
+                    Console.WriteLine("Withdraw amount must be greater than 0");
+                    return;
+                }
                 if (bankAccounts[accountNumber] >= amount)
                 {
                     bankAccounts[accountNumber] -= amount;
